@@ -1,0 +1,72 @@
+#!/bin/bash
+#Get vhost name
+
+vhost_name="$1"
+DIRECTORY=/var/www/sites
+#check for correct input
+if [ -z "$1" ]
+then
+				printf "No argument supplied\nPlease enter a vhost name\n"
+				exit 1
+fi
+
+echo "${vhost_name}"
+echo Vhost
+
+#Create directory
+if [ ! -d "$DIRECTORY" ]; then
+				# Control will enter here if $DIRECTORY doesn't exist.
+	echo sites dir does not exist will be created				
+	mkdir /var/www/sites
+fi
+
+echo sites directory exists
+mkdir /var/www/sites/"${vhost_name}".dev
+echo directory created at /var/www/sites/"${vhost_name}"
+
+wp core download --path=/var/www/sites/"${vhost_name}".dev
+echo Wordpress installed
+echo Create database
+
+echo "Please enter mysql username"
+read sqluser
+
+echo "Please enter  user MySQL password!"
+read rootpasswd
+
+echo "Please enter database name"
+read MAINDB
+
+mysql -u${sqluser} -p${rootpasswd} -e "CREATE DATABASE ${MAINDB} /*\!40100 DEFAULT CHARACTER SET utf8 */;"
+echo Database created
+
+echo Please edit vhost conf file in valid format
+
+sudo cp /etc/apache2/sites-available/woodmillane.dev.conf /etc/apache2/sites-available/"${vhost_name}".dev.conf
+echo Config file created
+
+sudo vi /etc/apache2/sites-available/"${vhost_name}.dev.conf"
+echo config edited
+
+sudo vi /etc/hosts
+echo Host added to /etc/hosts
+
+echo Enable site
+sudo a2ensite "${vhost_name}".dev.conf
+echo Site Enabled
+
+echo Reload Apache Server
+sudo service apache2 reload
+echo Apache reloaded
+
+echo site "${vhost_name}" enabled and setup done
+jhome () {
+				cd /var/www/sites/"${vhost_name}".dev
+}
+jhome
+echo changed into install dir running config
+
+wp core config --dbname=${MAINDB} --dbuser=${sqluser} --dbpass=${rootpasswd} --dbprefix=wp_
+
+echo config done launching browser
+google-chrome ${vhost_name}.dev
