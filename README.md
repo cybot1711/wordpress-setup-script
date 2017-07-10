@@ -2,6 +2,7 @@
 
 > This is a complete startup script That will handle your wordpress install for you. It requires wp-cli
 which you can download at the following link [wp-cli](http://wp-cli.org/) and chrome browser, follow the instructions.
+Also make sure your `/var/www` folder has the correct ownership and permissions.
 ![wordpress](https://s.w.org/images/backgrounds/wordpress-bg-medblue.png)
 ![bash](http://www.unixstickers.com/image/data/stickers/binbash/Bash-new.sh.png)
 
