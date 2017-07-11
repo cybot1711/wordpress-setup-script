@@ -42,7 +42,7 @@ echo Database created
 
 echo Please edit vhost conf file in valid format
 
-sudo cp /etc/apache2/sites-available/woodmillane.dev.conf /etc/apache2/sites-available/"${vhost_name}".dev.conf
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/"${vhost_name}".dev.conf
 echo Config file created
 
 sudo vi /etc/apache2/sites-available/"${vhost_name}.dev.conf"
